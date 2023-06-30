@@ -1,0 +1,18 @@
+{
+    "target":{
+        "key1": [
+            [
+                ["$key1"],"ccc"
+            ],
+            ["aa","bb"]
+        ]
+    },
+    "expected":{
+        "key1": [
+            [
+                ["value1"],"ccc"
+            ],
+            ["aa","bb"]
+        ]
+    }
+}

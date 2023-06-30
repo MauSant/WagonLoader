@@ -1,0 +1,9 @@
+{
+    "target":{
+       "simpleList": ["aaa","bbb"]
+    },
+    "expected":{
+        "simpleList": ["aaa","bbb"]
+       
+    }
+}
