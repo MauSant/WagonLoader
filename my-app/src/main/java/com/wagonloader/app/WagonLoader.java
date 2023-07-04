@@ -33,17 +33,16 @@ public class WagonLoader {
         return nestedNode;
     }
 
-
-    public static String evaluate(String valueNode){
+    public Object evaluate(String valueNode, JsonNode wagonData){
         Pattern pattern = Pattern.compile("^([A-Z]+(?:_[A-Z]+)*)\\((.*?)\\)$");
-        Matcher matcher = pattern.matcher("FIND(key1,key2)");
+        Matcher matcher = pattern.matcher(valueNode);
+        if (!matcher.matches()){
+            return valueNode;
+        }               
+        String method = matcher.group(1);
+        Object params = evaluate(matcher.group(2), wagonData);
 
-        matcher.matches();
-
-        System.out.println(matcher.group(0));
-        System.out.println(matcher.group(1));
-
-        return "";
+        return WagonWorkers.callWorker(method, params, wagonData);
 
     }
 

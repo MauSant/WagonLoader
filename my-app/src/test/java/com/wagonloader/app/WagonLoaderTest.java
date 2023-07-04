@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Assert;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import java.util.logging.Logger;
@@ -56,7 +57,7 @@ public class WagonLoaderTest {
         "findNestedObj.json",
         "findNestedList.json"
     })
-    public void testFillPayload(String inputFileName) throws IOException{
+    public void testFillPayloadOutput(String inputFileName) throws IOException{
         JsonNode input = readJson(inputFileName);
         JsonNode targetJson = input.get("target");
         JsonNode expected = input.get("expected");
@@ -68,4 +69,10 @@ public class WagonLoaderTest {
         Assert.assertEquals("msg", expected, actual); 
 
     }
+
+    //TODO
+    // @Test
+    // public void testEvaluate(){
+    //     wagonLoader.evaluate("FIND(key1,key2)");
+    // }
 }
