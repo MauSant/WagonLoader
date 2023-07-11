@@ -76,17 +76,18 @@ public class WagonLoader {
             ValueNode valueNode = (ValueNode) jsonNode;
             String textValue = valueNode.asText();
             
-            Object realvalue = null;
-            if(textValue.substring(0).contains("$")){
-                textValue = textValue.replaceFirst("[$]", "");
-                JsonNode trueValue = getObjectNodeNestedKeys( (ObjectNode) wagonData, textValue );
-                if (trueValue != null){
-                    realvalue = trueValue;
-                }
-            } else {
-                realvalue = textValue;
-            }
-            return realvalue;
+            return evaluate(textValue, wagonData);
+            // Object realvalue = null;
+            // if(textValue.substring(0).contains("$")){
+            //     textValue = textValue.replaceFirst("[$]", "");
+            //     JsonNode trueValue = getObjectNodeNestedKeys( (ObjectNode) wagonData, textValue );
+            //     if (trueValue != null){
+            //         realvalue = trueValue;
+            //     }
+            // } else {
+            //     realvalue = textValue;
+            // }
+            // return realvalue;
         }
 
         return null;

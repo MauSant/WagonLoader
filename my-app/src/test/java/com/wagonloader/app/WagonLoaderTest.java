@@ -51,13 +51,13 @@ public class WagonLoaderTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
-        "WagonLoaderTest/simpleKey.json",
-        "WagonLoaderTest/simpleList.json",
-        "WagonLoaderTest/findSimpleKey.json",
-        "WagonLoaderTest/findNestedObj.json",
-        "WagonLoaderTest/findNestedList.json"
+        "WagonLoaderTest/fillPayload/simpleKey.json",
+        "WagonLoaderTest/fillPayload/simpleList.json",
+        "WagonLoaderTest/fillPayload/findSimpleKey.json",
+        "WagonLoaderTest/fillPayload/findNestedObj.json",
+        "WagonLoaderTest/fillPayload/findNestedList.json"
     })
-    public void testFillPayloadOutput(String inputFileName) throws IOException{
+    public void testFillPayload(String inputFileName) throws IOException{
         JsonNode input = readJson(inputFileName);
         JsonNode targetJson = input.get("target");
         JsonNode expected = input.get("expected");
@@ -70,9 +70,15 @@ public class WagonLoaderTest {
 
     }
 
-    //TODO
-    // @Test
-    // public void testEvaluate(){
-    //     wagonLoader.evaluate("FIND(key1,key2)");
-    // }
+    @Test
+    public void testSimpleEvaluate(){
+        Object actual = wagonLoader.evaluate("FIND(key1)", wagonData);
+        Assert.assertEquals("msg", wagonData.get("key1"), actual); 
+    }
+
+    @Test
+    public void testSimpleRecursionEvaluate(){
+        Object actual = wagonLoader.evaluate("FIND(FIND(key1))", wagonData);
+        Assert.assertEquals("msg", wagonData.get("value1"), actual); 
+    }
 }

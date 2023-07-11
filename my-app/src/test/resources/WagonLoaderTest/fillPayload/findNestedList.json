@@ -2,7 +2,7 @@
     "target":{
         "key1": [
             [
-                ["$key1"],"ccc"
+                ["FIND(key1)"],"ccc"
             ],
             ["aa","bb"]
         ]

@@ -2,5 +2,6 @@
     "key1":"value1",
     "key2": {
         "key2-1": "nested Value 2.1"
-    }
+    },
+    "value1":"simple recursion value"
 }

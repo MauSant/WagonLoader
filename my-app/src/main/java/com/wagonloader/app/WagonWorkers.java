@@ -22,7 +22,10 @@ public class WagonWorkers {
     
     private static Object find(Object params, JsonNode wagonData){
         try{
-            if (!(params instanceof String))
+
+            if (params instanceof JsonNode){
+                params = ((JsonNode) params).asText();
+            } else if (!(params instanceof String))
                 throw new IllegalArgumentException("Params is not a string");
             
             String paramsStr = (String) params;
