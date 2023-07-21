@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.ValueNode;
+import com.wagonloader.app.workers.WagonWorkers;
 
 public class WagonLoader {
     ObjectMapper mapper = new ObjectMapper();
@@ -36,37 +37,39 @@ public class WagonLoader {
 
  
 
-    public Object fillPayload(String currentPath, JsonNode jsonNode, JsonNode wagonData) throws IOException{
+    public JsonNode fillPayload(String currentPath, JsonNode jsonNode, JsonNode wagonData) throws IOException{
         String separator = "/";
         String arraySeparator = "#";
-        Object result = null;
+        JsonNode result = null;
 
         if(jsonNode.isObject()){
             ObjectNode objectNode = (ObjectNode) jsonNode;
             Iterator<Map.Entry<String, JsonNode>> iter = objectNode.fields();
             String pathPrefix = currentPath.isEmpty() ? "" : currentPath + separator;
-            Map<String, Object> bigNode = new HashMap<>();
+
+            ObjectNode bigNode = mapper.createObjectNode();
+            
             while(iter.hasNext()){
                 Map.Entry<String, JsonNode> entry = iter.next();
-                result = fillPayload(pathPrefix+ entry.getKey(), entry.getValue(), wagonData); // I think we can remove passing bigNode as parameter 
-                bigNode.put(entry.getKey(), result);
+                result = fillPayload(pathPrefix+ entry.getKey(), entry.getValue(), wagonData);  
+                bigNode.set(entry.getKey(), result);
+
             }
             return bigNode;
         } else if(jsonNode.isArray()){
             ArrayNode arrayNode = (ArrayNode) jsonNode;
             String pathPrefixList = currentPath.isEmpty() ? "" : currentPath + arraySeparator;
 
-            List<Object> bigList = new ArrayList<>();
+            ArrayNode bigList = mapper.createArrayNode();
             for (int i=0; i< arrayNode.size(); i++){
-                result = fillPayload(pathPrefixList, arrayNode.get(i), wagonData);//TODO `map` been pass here it is wrong! I think we can remove
+                result = fillPayload(pathPrefixList, arrayNode.get(i), wagonData);
                 bigList.add(result);
             }
             return bigList;
         } else if(jsonNode.isValueNode()){
             ValueNode valueNode = (ValueNode) jsonNode;
-            String textValue = valueNode.asText();
             
-            return wagonWorkers.evaluate(textValue, wagonData);
+            return wagonWorkers.evaluate(valueNode, wagonData);
             
         }
 

@@ -1,4 +1,4 @@
-package com.wagonloader.app;
+package com.wagonloader.app.workers;
 
 
 import static org.mockito.Mockito.mockStatic;
@@ -23,6 +23,8 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.node.ValueNode;
+import com.wagonloader.app.workers.WagonWorkers;
 
 public class WagonWorkersTest {
     ObjectMapper mapper = new ObjectMapper();
@@ -31,7 +33,7 @@ public class WagonWorkersTest {
     private static final Logger logger = Logger.getLogger(WagonWorkersTest.class.getName());
 
     public JsonNode readJson(String fileName){
-        InputStream stream = WagonWorkersTest.class.getResourceAsStream("../../../"+fileName);
+        InputStream stream = WagonWorkersTest.class.getResourceAsStream("../../../../"+fileName);
         try {
             return mapper.readValue(stream, JsonNode.class);
         } catch (JsonParseException e) {
@@ -44,6 +46,10 @@ public class WagonWorkersTest {
         return null;
     }
 
+    public ValueNode createValueNode(String str){
+        return  mapper.getNodeFactory().textNode(str);
+
+    }
 
     public String prettyPrintObject(Object target){
         JsonNode j = mapper.convertValue(target,JsonNode.class);
@@ -63,23 +69,23 @@ public class WagonWorkersTest {
     })
     public void testingFind(String inputFileName){
         JsonNode input = readJson(inputFileName);
-        Object params = input.get("params").asText();
+        JsonNode params = input.get("params");
         String workerName =  "FIND";
         JsonNode expected = input.get("expected");
-        Object actual = wagonWorkers.callWorker(workerName, params, wagonData);
+        JsonNode actual = wagonWorkers.callWorker(workerName, params, wagonData);
         logger.info("actual :: "+ actual);
         Assert.assertEquals("msg", expected, actual); 
     }
 
     @Test
     public void testSimpleEvaluate(){
-        Object actual = wagonWorkers.evaluate("FIND(key1)", wagonData);
+        Object actual = wagonWorkers.evaluate(createValueNode("FIND(key1)"), wagonData);
         Assert.assertEquals("msg", wagonData.get("key1"), actual); 
     }
 
     @Test
     public void testSimpleRecursionEvaluate(){
-        Object actual = wagonWorkers.evaluate("FIND(FIND(key1))", wagonData);
+        Object actual = wagonWorkers.evaluate(createValueNode("FIND(FIND(key1))"), wagonData);
         Assert.assertEquals("msg", wagonData.get("value1"), actual); 
     }
 

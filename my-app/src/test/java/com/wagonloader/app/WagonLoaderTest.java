@@ -2,8 +2,6 @@ package com.wagonloader.app;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
@@ -16,7 +14,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class WagonLoaderTest {
     ObjectMapper mapper = new ObjectMapper();
@@ -62,8 +59,7 @@ public class WagonLoaderTest {
         JsonNode targetJson = input.get("target");
         JsonNode expected = input.get("expected");
 
-        Object r = wagonLoader.fillPayload("", targetJson, wagonData );
-        JsonNode actual = mapper.convertValue(r, JsonNode.class);
+        JsonNode actual = wagonLoader.fillPayload("", targetJson, wagonData );
         logger.info("["+inputFileName+"]"+prettyPrintObject(actual));
         Assert.assertEquals("msg", expected, actual); 
 
