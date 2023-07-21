@@ -36,7 +36,7 @@ public class WagonLoader {
 
  
 
-    public Object fillPayload(String currentPath, JsonNode jsonNode, Map<String, Object>map, JsonNode wagonData) throws IOException{
+    public Object fillPayload(String currentPath, JsonNode jsonNode, JsonNode wagonData) throws IOException{
         String separator = "/";
         String arraySeparator = "#";
         Object result = null;
@@ -48,7 +48,7 @@ public class WagonLoader {
             Map<String, Object> bigNode = new HashMap<>();
             while(iter.hasNext()){
                 Map.Entry<String, JsonNode> entry = iter.next();
-                result = fillPayload(pathPrefix+ entry.getKey(), entry.getValue(), bigNode, wagonData); // I think we can remove passing bigNode as parameter 
+                result = fillPayload(pathPrefix+ entry.getKey(), entry.getValue(), wagonData); // I think we can remove passing bigNode as parameter 
                 bigNode.put(entry.getKey(), result);
             }
             return bigNode;
@@ -58,7 +58,7 @@ public class WagonLoader {
 
             List<Object> bigList = new ArrayList<>();
             for (int i=0; i< arrayNode.size(); i++){
-                result = fillPayload(pathPrefixList, arrayNode.get(i), map, wagonData);//TODO `map` been pass here it is wrong! I think we can remove
+                result = fillPayload(pathPrefixList, arrayNode.get(i), wagonData);//TODO `map` been pass here it is wrong! I think we can remove
                 bigList.add(result);
             }
             return bigList;

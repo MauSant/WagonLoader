@@ -62,8 +62,7 @@ public class WagonLoaderTest {
         JsonNode targetJson = input.get("target");
         JsonNode expected = input.get("expected");
 
-        Map<String, Object> map = new HashMap<>();
-        Object r = wagonLoader.fillPayload("", targetJson, map, wagonData );
+        Object r = wagonLoader.fillPayload("", targetJson, wagonData );
         JsonNode actual = mapper.convertValue(r, JsonNode.class);
         logger.info("["+inputFileName+"]"+prettyPrintObject(actual));
         Assert.assertEquals("msg", expected, actual); 
