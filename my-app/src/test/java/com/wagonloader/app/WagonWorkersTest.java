@@ -66,11 +66,22 @@ public class WagonWorkersTest {
         Object params = input.get("params").asText();
         String workerName =  "FIND";
         JsonNode expected = input.get("expected");
-        Object actual = WagonWorkers.callWorker(workerName, params, wagonData);
+        Object actual = wagonWorkers.callWorker(workerName, params, wagonData);
         logger.info("actual :: "+ actual);
         Assert.assertEquals("msg", expected, actual); 
     }
 
+    @Test
+    public void testSimpleEvaluate(){
+        Object actual = wagonWorkers.evaluate("FIND(key1)", wagonData);
+        Assert.assertEquals("msg", wagonData.get("key1"), actual); 
+    }
+
+    @Test
+    public void testSimpleRecursionEvaluate(){
+        Object actual = wagonWorkers.evaluate("FIND(FIND(key1))", wagonData);
+        Assert.assertEquals("msg", wagonData.get("value1"), actual); 
+    }
 
 
 }

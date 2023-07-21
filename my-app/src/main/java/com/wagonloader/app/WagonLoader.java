@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.node.ValueNode;
 
 public class WagonLoader {
     ObjectMapper mapper = new ObjectMapper();
+    WagonWorkers wagonWorkers = new WagonWorkers();
 
     public static JsonNode getObjectNodeNestedKeys(ObjectNode node, String nestedKey){
         String[] keys = nestedKey.split("\\.");
@@ -33,18 +34,7 @@ public class WagonLoader {
         return nestedNode;
     }
 
-    public Object evaluate(String valueNode, JsonNode wagonData){
-        Pattern pattern = Pattern.compile("^([A-Z]+(?:_[A-Z]+)*)\\((.*?)\\)$");
-        Matcher matcher = pattern.matcher(valueNode);
-        if (!matcher.matches()){
-            return valueNode;
-        }               
-        String method = matcher.group(1);
-        Object params = evaluate(matcher.group(2), wagonData);
-
-        return WagonWorkers.callWorker(method, params, wagonData);
-
-    }
+ 
 
     public Object fillPayload(String currentPath, JsonNode jsonNode, Map<String, Object>map, JsonNode wagonData) throws IOException{
         String separator = "/";
@@ -76,18 +66,8 @@ public class WagonLoader {
             ValueNode valueNode = (ValueNode) jsonNode;
             String textValue = valueNode.asText();
             
-            return evaluate(textValue, wagonData);
-            // Object realvalue = null;
-            // if(textValue.substring(0).contains("$")){
-            //     textValue = textValue.replaceFirst("[$]", "");
-            //     JsonNode trueValue = getObjectNodeNestedKeys( (ObjectNode) wagonData, textValue );
-            //     if (trueValue != null){
-            //         realvalue = trueValue;
-            //     }
-            // } else {
-            //     realvalue = textValue;
-            // }
-            // return realvalue;
+            return wagonWorkers.evaluate(textValue, wagonData);
+            
         }
 
         return null;

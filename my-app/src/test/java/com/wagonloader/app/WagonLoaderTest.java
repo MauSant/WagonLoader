@@ -70,15 +70,5 @@ public class WagonLoaderTest {
 
     }
 
-    @Test
-    public void testSimpleEvaluate(){
-        Object actual = wagonLoader.evaluate("FIND(key1)", wagonData);
-        Assert.assertEquals("msg", wagonData.get("key1"), actual); 
-    }
-
-    @Test
-    public void testSimpleRecursionEvaluate(){
-        Object actual = wagonLoader.evaluate("FIND(FIND(key1))", wagonData);
-        Assert.assertEquals("msg", wagonData.get("value1"), actual); 
-    }
+    
 }
