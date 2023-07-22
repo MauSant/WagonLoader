@@ -1,13 +1,8 @@
 package com.wagonloader.app;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,21 +14,6 @@ import com.wagonloader.app.workers.WagonWorkers;
 public class WagonLoader {
     ObjectMapper mapper = new ObjectMapper();
     WagonWorkers wagonWorkers = new WagonWorkers();
-
-    public static JsonNode getObjectNodeNestedKeys(ObjectNode node, String nestedKey){
-        String[] keys = nestedKey.split("\\.");
-
-        JsonNode nestedNode = node;
-
-        for (String key: keys){
-            nestedNode = nestedNode.get(key);
-            if(nestedNode == null){
-                return null;
-            }
-        }
-        
-        return nestedNode;
-    }
 
  
 

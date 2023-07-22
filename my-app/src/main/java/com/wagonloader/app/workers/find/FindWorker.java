@@ -1,6 +1,7 @@
 package com.wagonloader.app.workers.find;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class FindWorker {
@@ -22,12 +23,12 @@ public class FindWorker {
     }
 
     // Create its own POJO for this method
-    public JsonNode find(JsonNode params, JsonNode wagonData){
+    public JsonNode find(ArrayNode params, JsonNode wagonData){
         try{
-            String paramsStr = params.asText();
-            String[] paramsList = paramsStr.split("[,]");
-            if (paramsList.length > 1) 
+            if (params.size() > 1) 
                 throw new IllegalArgumentException("Too many parameters for method FIND");
+
+            String paramsStr = params.get(0).asText();
 
             JsonNode trueValue = getObjectNodeNestedKeys( (ObjectNode) wagonData, paramsStr );
             return trueValue;

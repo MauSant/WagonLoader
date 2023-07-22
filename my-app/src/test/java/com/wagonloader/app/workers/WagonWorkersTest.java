@@ -22,6 +22,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.ValueNode;
 import com.wagonloader.app.workers.WagonWorkers;
@@ -69,7 +70,7 @@ public class WagonWorkersTest {
     })
     public void testingFind(String inputFileName){
         JsonNode input = readJson(inputFileName);
-        JsonNode params = input.get("params");
+        ArrayNode params = mapper.createArrayNode().add(input.get("params"));
         String workerName =  "FIND";
         JsonNode expected = input.get("expected");
         JsonNode actual = wagonWorkers.callWorker(workerName, params, wagonData);
@@ -88,6 +89,12 @@ public class WagonWorkersTest {
         Object actual = wagonWorkers.evaluate(createValueNode("FIND(FIND(key1))"), wagonData);
         Assert.assertEquals("msg", wagonData.get("value1"), actual); 
     }
+
+    // @Test
+    // public void testSimpleRecursionEvaluateWithMoreParams(){
+    //     Object actual = wagonWorkers.evaluate(createValueNode("FIND(FIND(key1), user123, FIND(key1))"), wagonData);
+    //     Assert.assertEquals("msg", wagonData.get("value1"), actual); 
+    // }
 
 
 }
