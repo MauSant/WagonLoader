@@ -11,11 +11,14 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.ValueNode;
 
 import com.wagonloader.app.workers.find.FindWorker;
+import com.wagonloader.app.workers.concat.ConcatWorker;
+
 
 public class WagonWorkers {
     ObjectMapper mapper = new ObjectMapper();
-    FindWorker findWorker = new FindWorker(); 
     JsonNodeFactory nodeFactory = mapper.getNodeFactory();
+    FindWorker findWorker = new FindWorker(); 
+    ConcatWorker concatWorker = new ConcatWorker(); 
 
 
     public JsonNode evaluate(ValueNode valueNode, JsonNode wagonData){
@@ -47,6 +50,8 @@ public class WagonWorkers {
         switch(workerName) {
             case "FIND":
                 return findWorker.find(params, wagonData); 
+            case "CONCAT":
+                return concatWorker.concat(params, wagonData); 
             default:
                 System.out.println("Not found worker");
                 return null;

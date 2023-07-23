@@ -27,6 +27,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.ValueNode;
 import com.wagonloader.app.workers.WagonWorkers;
 
+import java.lang.StringBuilder;
+
 public class WagonWorkersTest {
     ObjectMapper mapper = new ObjectMapper();
     WagonWorkers wagonWorkers = new WagonWorkers();
@@ -80,19 +82,34 @@ public class WagonWorkersTest {
 
     @Test
     public void testSimpleEvaluate(){
-        Object actual = wagonWorkers.evaluate(createValueNode("FIND(key1)"), wagonData);
+        JsonNode actual = wagonWorkers.evaluate(createValueNode("FIND(key1)"), wagonData);
         Assert.assertEquals("msg", wagonData.get("key1"), actual); 
     }
 
     @Test
     public void testSimpleRecursionEvaluate(){
-        Object actual = wagonWorkers.evaluate(createValueNode("FIND(FIND(key1))"), wagonData);
+        JsonNode actual = wagonWorkers.evaluate(createValueNode("FIND(FIND(key1))"), wagonData);
         Assert.assertEquals("msg", wagonData.get("value1"), actual); 
     }
 
+    @Test //TODO We need to fix this! This is breaking the application!
+    public void testRecursionEvaluateWithMoreFuncions(){
+        JsonNode actual = wagonWorkers.evaluate(createValueNode("FIND(CONCAT(FIND(key1), THISthing))"), wagonData);
+        String expected = wagonData.get("value1").asText() + "THISthing";
+        Assert.assertEquals("msg", expected, actual); 
+    }
+
+    @Test
+    public void testEvaluateWithMoreParams(){
+        JsonNode actual = wagonWorkers.evaluate(createValueNode("CONCAT(key1, =, key2)"), wagonData);
+        Assert.assertEquals("msg", "key1=key2", actual.asText()); 
+    }
+
+   
+
     // @Test
-    // public void testSimpleRecursionEvaluateWithMoreParams(){
-    //     Object actual = wagonWorkers.evaluate(createValueNode("FIND(FIND(key1), user123, FIND(key1))"), wagonData);
+    // public void testRecursionEvaluateWithMoreParams(){
+    //     Object actual = wagonWorkers.evaluate(createValueNode("FIND(CONCAT(key1,key2), user123, FIND(key1))"), wagonData);
     //     Assert.assertEquals("msg", wagonData.get("value1"), actual); 
     // }
 

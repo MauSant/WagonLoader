@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 public class FindWorker {
 
     
-    public JsonNode getObjectNodeNestedKeys(ObjectNode node, String nestedKey){
+    private JsonNode getObjectNodeNestedKeys(ObjectNode node, String nestedKey){
             String[] keys = nestedKey.split("\\.");
 
             JsonNode nestedNode = node;
@@ -22,11 +22,12 @@ public class FindWorker {
             return nestedNode;
     }
 
-    // Create its own POJO for this method
     public JsonNode find(ArrayNode params, JsonNode wagonData){
         try{
             if (params.size() > 1) 
                 throw new IllegalArgumentException("Too many parameters for method FIND");
+            else if(params.size() == 0)
+                throw new IllegalArgumentException("Too few parameters for method FIND");
 
             String paramsStr = params.get(0).asText();
 
