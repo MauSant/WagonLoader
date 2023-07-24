@@ -13,6 +13,8 @@ import com.fasterxml.jackson.databind.node.ValueNode;
 import com.wagonloader.app.workers.find.FindWorker;
 import com.wagonloader.app.workers.concat.ConcatWorker;
 
+import static com.wagonloader.app.utils.Constants.FUNCTION_REGEX_PATTERN;
+
 
 public class WagonWorkers {
     ObjectMapper mapper = new ObjectMapper();
@@ -25,15 +27,25 @@ public class WagonWorkers {
         
         //TODO Change valueNode to String! We dont need to pass valueNode anymore!
         
-        Pattern pattern = Pattern.compile("^([A-Z]+(?:_[A-Z]+)*)\\((.*?)\\)$");
+        Pattern pattern = Pattern.compile(FUNCTION_REGEX_PATTERN.toString());
         Matcher matcher = pattern.matcher(valueNode.asText());
         if (!matcher.matches()){
             return valueNode;
         }               
         String method = matcher.group(1);
+
+
+        //TODO: Create method for parsing the ", ", the input will be  matcher.group(2) and the output should be the Arraynode
+            //TODO: Read char by char until you find a comma. 
+                // Then figure it out wheteher this comma is inside a `FUNCION(` pattern.
+                    //If it is INside then do nothing
+                    //Else Add the index of this comma to a Array! This array will be used later for creating subtrings that goes inside teh arrayNode!
         String[] Multipleparams = matcher.group(2).split(", ");
         ValueNode deepMethods;
         ArrayNode params = mapper.createArrayNode();
+        //TODO
+
+
         for (String Singleparam: Multipleparams){
             deepMethods = nodeFactory.textNode(Singleparam);
             params.add(evaluate(deepMethods, wagonData));
