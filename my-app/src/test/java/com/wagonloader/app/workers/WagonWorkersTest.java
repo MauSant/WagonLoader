@@ -1,19 +1,14 @@
 package com.wagonloader.app.workers;
 
 
-import static org.mockito.Mockito.mockStatic;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.mockito.MockedStatic;
-import org.mockito.Mockito;
 
 import java.util.logging.Logger;
 
@@ -23,11 +18,8 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.ValueNode;
-import com.wagonloader.app.workers.WagonWorkers;
 
-import java.lang.StringBuilder;
 
 public class WagonWorkersTest {
     ObjectMapper mapper = new ObjectMapper();
