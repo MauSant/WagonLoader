@@ -84,26 +84,16 @@ public class WagonWorkersTest {
         Assert.assertEquals("msg", wagonData.get("value1"), actual); 
     }
 
-    // @Test //TODO We need to fix this! This is breaking the application!
-    // public void testRecursionEvaluateWithMoreFuncions(){
-    //     JsonNode actual = wagonWorkers.evaluate(createValueNode("FIND(CONCAT(FIND(key1), THISthing))"), wagonData);
-    //     String expected = wagonData.get("value1").asText() + "THISthing";
-    //     Assert.assertEquals("msg", expected, actual); 
-    // }
+    @Test
+    public void testRecursionEvaluateWithMoreFuncions(){
+        JsonNode actual = wagonWorkers.evaluate(createValueNode("FIND(CONCAT(FIND(key1), THISthing))"), wagonData);
+        JsonNode expected = wagonData.get("value1THISthing");
+        Assert.assertEquals("msg", expected, actual); 
+    }
 
     @Test
     public void testEvaluateWithMoreParams(){
         JsonNode actual = wagonWorkers.evaluate(createValueNode("CONCAT(key1, =, key2)"), wagonData);
         Assert.assertEquals("msg", "key1=key2", actual.asText()); 
     }
-
-   
-
-    // @Test
-    // public void testRecursionEvaluateWithMoreParams(){
-    //     Object actual = wagonWorkers.evaluate(createValueNode("FIND(CONCAT(key1,key2), user123, FIND(key1))"), wagonData);
-    //     Assert.assertEquals("msg", wagonData.get("value1"), actual); 
-    // }
-
-
 }

@@ -51,7 +51,8 @@ public class WagonLoaderTest {
         "WagonLoaderTest/fillPayload/simpleList.json",
         "WagonLoaderTest/fillPayload/findSimpleKey.json",
         "WagonLoaderTest/fillPayload/findNestedObj.json",
-        "WagonLoaderTest/fillPayload/findNestedList.json"
+        "WagonLoaderTest/fillPayload/findNestedList.json",
+        "WagonLoaderTest/fillPayload/findAndConcat.json"
     })
     public void testFillPayload(String inputFileName) throws IOException{
         JsonNode input = readJson(inputFileName);
@@ -63,6 +64,4 @@ public class WagonLoaderTest {
         Assert.assertEquals("msg", expected, actual); 
 
     }
-
-    
 }

@@ -1,5 +1,6 @@
 package com.wagonloader.app.workers;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -20,6 +21,7 @@ public class WagonWorkers {
     JsonNodeFactory nodeFactory = mapper.getNodeFactory();
     FindWorker findWorker = new FindWorker(); 
     ConcatWorker concatWorker = new ConcatWorker(); 
+    WagonParsers wagonParsers = new WagonParsers();
 
 
     public JsonNode evaluate(ValueNode valueNode, JsonNode wagonData){
@@ -34,18 +36,11 @@ public class WagonWorkers {
         String method = matcher.group(1);
 
 
-        //TODO: Create method for parsing the ", ", the input will be  matcher.group(2) and the output should be the Arraynode
-            //TODO: Read char by char until you find a comma. 
-                // Then figure it out wheteher this comma is inside a `FUNCION(` pattern.
-                    //If it is INside then do nothing
-                    //Else Add the index of this comma to a Array! This array will be used later for creating subtrings that goes inside teh arrayNode!
-        String[] Multipleparams = matcher.group(2).split(", ");
+        List<String> multipleParams = wagonParsers.SplitParser(matcher.group(2));
         ValueNode deepMethods;
         ArrayNode params = mapper.createArrayNode();
-        //TODO
 
-
-        for (String Singleparam: Multipleparams){
+        for (String Singleparam: multipleParams){
             deepMethods = nodeFactory.textNode(Singleparam);
             params.add(evaluate(deepMethods, wagonData));
         }

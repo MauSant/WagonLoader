@@ -1,12 +1,10 @@
 package com.wagonloader.app.workers;
 
-import static org.mockito.ArgumentMatchers.booleanThat;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 
 
 public class WagonParsers {
@@ -17,8 +15,6 @@ public class WagonParsers {
         boolean foundDigits = false;
         for (int i = 0; i < s.length(); i++) {
             char currentChar = s.charAt(i);
-            
-
             if (!foundDigits){
                 if (currentChar != ' ' && currentChar != ',' ){
                     foundDigits = true;
@@ -32,13 +28,13 @@ public class WagonParsers {
     }
 
     
-    public ArrayNode SplitParser(String sentence){
+    public List<String> SplitParser(String sentence){
         char ch;
         int pCount = 0;
         int beginIndex = 0;
         String param = null;
         List<Integer> outerCommas = new ArrayList<>();
-        ArrayNode multipleParams = mapper.createArrayNode();
+        List<String> multipleParams = new ArrayList<>();
         for (int i = 0; i < sentence.length(); i++) {
             ch = sentence.charAt(i);
             if (ch =='(')
