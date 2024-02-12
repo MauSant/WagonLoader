@@ -9,7 +9,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class WagonParsers {
     ObjectMapper mapper = new ObjectMapper();
-
     public static String removeSpaceBeforeDigits(String s) {
         StringBuilder withoutspaces = new StringBuilder(""); 
         boolean foundDigits = false;
