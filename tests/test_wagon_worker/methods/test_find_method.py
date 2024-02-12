@@ -1,9 +1,5 @@
-from typing import Iterable
 import pytest
 import sys
-import re
-import operator
-import functools
 from wagonloader.wagon_worker.methods.find_method import find
 
 

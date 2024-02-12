@@ -8,7 +8,7 @@ MethodType = Callable[[Any, dict|list|str], str]
 
 
 class WagonWorkerDefault(WagonWorkerInterface):
-    workers_records: dict[str,MethodType]
+    workers_records: dict[str,MethodType] = {}
     wagon_data: dict|list|str
 
 
@@ -31,7 +31,10 @@ class WagonWorkerDefault(WagonWorkerInterface):
 
         multiple_params:list[str] = split_parser(matcher.group(2))
 
+        #Evaluates each of the multiple params
         params = [self.evaluate(single_param) for single_param in multiple_params]
+        
+        #Call for the method
         return self.call_method(method_key=method_key, params=params)
 
     def call_method(self, method_key:str, params:list[str]) -> dict|list|str:
