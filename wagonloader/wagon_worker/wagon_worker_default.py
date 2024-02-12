@@ -11,7 +11,6 @@ class WagonWorkerDefault(WagonWorkerInterface):
     workers_records: dict[str,MethodType] = {}
     wagon_data: dict|list|str
 
-
     def evaluate(self, node: any) -> dict|list|str:
         #Transforms the node into a string
         try:

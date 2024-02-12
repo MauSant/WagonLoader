@@ -1,8 +1,0 @@
-{
-    "target":{
-        "key1":"value1"
-    },
-    "expected":{
-        "key1":"value1"
-    }
-}
