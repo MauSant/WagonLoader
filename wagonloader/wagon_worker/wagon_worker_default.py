@@ -12,7 +12,7 @@ class WagonWorkerDefault(WagonWorkerInterface):
     wagon_data: dict|list|str
 
 
-    def evaluate(self, node: any) -> str:
+    def evaluate(self, node: any) -> dict|list|str:
         #Transforms the node into a string
         try:
             node = str(node)
@@ -34,7 +34,7 @@ class WagonWorkerDefault(WagonWorkerInterface):
         params = [self.evaluate(single_param) for single_param in multiple_params]
         return self.call_method(method_key=method_key, params=params)
 
-    def call_method(self, method_key:str, params:list[str]) -> str:
+    def call_method(self, method_key:str, params:list[str]) -> dict|list|str:
         method:MethodType = self.workers_records[method_key]
         return method(params, self.wagon_data)
 

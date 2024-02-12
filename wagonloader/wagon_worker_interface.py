@@ -5,7 +5,7 @@ class WagonWorkerInterface(Protocol):
     wagon_data: dict|list|str
 
     @abstractmethod
-    def evaluate(self, node:str) -> str:
+    def evaluate(self, node:str) -> dict|list|str:
         ...
 
     def update_wagon_data(self, wagon_data:dict|list|str) -> None:
