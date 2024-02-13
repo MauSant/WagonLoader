@@ -1,8 +1,0 @@
-{
-    "target":{
-       "url": "CONCAT(FIND(spec.baseUrl), FIND(spec.path), FIND(userInput.localization))"
-    },
-    "expected":{
-       "url":"https://murago.com.br/Brasil!"
-    }
-}
