@@ -50,7 +50,7 @@ So the folowing JSON, would tell WagonLoader to find the value behind the key `a
   wagon_worker = Worker()
   # Wagon Worker code (Check next section)
 
-  output:json = fill_payload("", node, wagon_worker)
+  output:json = fill_payload(node, wagon_worker)
 
   ```
 
@@ -90,7 +90,8 @@ So the folowing JSON, would tell WagonLoader to find the value behind the key `a
     wagon_worker.update_wagon_data(context) # step3
     wagon_worker.upload_method(method_key="FIND", method_callable=find) # step4
   ```
-  If you want to expand the Wagon Worker with more methods, you can do so with the class method `upload_method()`. The only requirements is that `method_key`, must be uppercase and optionally have underscores, for example:  
+  If you want to expand the Wagon Worker with more methods, you can do so with the class method `upload_method()`. There are 2 requirements necessary:
+  1.  `method_key` must be uppercase and optionally have underscores, for example:  
 
     FIND [Ok]  
     CONCAT [Ok]  
@@ -105,6 +106,15 @@ So the folowing JSON, would tell WagonLoader to find the value behind the key `a
   ```re
   ^([A-Z]+(?:_[A-Z]+)*)\((.*?)\)$
   ```
+  2.  method_callable must follow the type MethodType: 
+  ```python
+
+  JsonType = None | int | str | bool | list["JsonType"] | dict[str, "JsonType"]
+
+  MethodType = Callable[[list[str], JsonType], JsonType]
+  ```
+
+  Which means takes 2 arguments, the first must be a list of strings and the second must be a JsonType defined above.
 
   #### Default Methods
   A few default methods are already built within the Wagon Loader. 
@@ -147,6 +157,13 @@ So the folowing JSON, would tell WagonLoader to find the value behind the key `a
 
   FIND(0.key1.key2.0.key3) -> returns `value`
   ```
+
+  ##### CONCAT
+  Concatenate every argument. Every argument must be able to transform into a string
+  ```
+  CONCAT(nest_dict1, . , nest_dict2) -> "nest_dict1.nest_dict2"
+  ```
+
   ### Creating you own Wagon Worker
   
   In order to create a Wagon worker, you must follow the WagonWorkerInterface, which is a python Protocol
@@ -161,6 +178,34 @@ So the folowing JSON, would tell WagonLoader to find the value behind the key `a
       ...
   ```
 
+  ### Notes
   
+  #### Use of '' for text or passwords
+  The following use is allowed in the request json
+  ``` 
+  Request Json:
+  {
+    "key1": "CONCAT('ghost in the ', Shell)"
+  }
+
+  Output Json:
+  {
+    "key1": "ghost in the Shell"
+  }
+  ```
+  Or building a string with passwords that have complicated charcaters:
+  ```
+  Request Json                   Arg1                Arg2                 Arg3                    Arg4
+  {                 --------------------------------  -- --------------------------------------   -----
+    "mongo_string":"CONCAT(mongodb://, FIND(username), :,'#*¨%#!),notAMethod(@#¨GHSA,DJH*&¨!(#)_)', @host)"
+  }
+
+
+  Output Json
+  {
+    "mongo_string": "mongodb://JohnSmith:#*¨%#!),notAMethod(@#¨GHSA,DJH*&¨!(#)_)@host"
+  }
+  ```
+
 
 

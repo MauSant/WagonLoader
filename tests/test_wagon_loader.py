@@ -1,28 +1,45 @@
 import pytest
 import sys
 from wagonloader.wagon_loader import fill_payload
+from wagonloader.wagon_worker.wagon_worker_default import WagonWorkerDefault
+from wagonloader.wagon_worker.methods.find_method import find
+from wagonloader.wagon_worker.methods.concat_method import concat
 
-class validateUserInput:
-    def evaluate(self, node):
-        return node
 
-
-def test_simple_fill_payload():
-    node = {
-        # "value_node":1,
-        # "value_node":"",
-        # "list_node":[],
-        "dict_node": {
-            # "deep":"1",
-            "dict_node2":{
-                "deep2":2
+@pytest.fixture
+def wagon_data():
+    return {
+        "nest_dict1":{
+            "nest_dict2":{
+                "nest_dict3":"value",
             }
-        }
+        },
+        "nest_list":[1,2,["a","b", ["c"]] ],
+        "simple":"value1",
+        "nest_dict_recursion":"nest_dict1"
 
     }
-    
-    r = fill_payload("", node, validateUserInput())
-    assert 1 == 1
+
+@pytest.mark.parametrize("node, expected",
+                        [
+                            ("FIND(simple)", "value1"),
+                            ("FIND(nest_dict1.nest_dict2)", {"nest_dict3":"value"}),
+                            ("FIND(nest_list)", [1,2,["a","b", ["c"]] ]),
+                            ("FIND(nest_list.2.2.0)", "c"),
+                            ("FIND(FIND(nest_dict_recursion))", {"nest_dict2":{"nest_dict3":"value"}}),
+                            ("FIND(CONCAT(FIND(nest_dict_recursion), . , nest_dict2))", {"nest_dict3":"value"}),
+                        ] 
+)
+def test_simple_fill_payload(node, expected, wagon_data:dict):
+    wagon_worker_default = WagonWorkerDefault()
+    wagon_worker_default.update_wagon_data(wagon_data)
+    wagon_worker_default.upload_method(method_key="FIND", method_callable=find)
+    wagon_worker_default.upload_method(method_key="CONCAT", method_callable=concat)
+
+
+
+    result = fill_payload(node, wagon_worker_default)
+    assert result == expected
 
 if __name__ == "__main__":
     pytest.main(sys.argv)
