@@ -1,7 +1,8 @@
 import json
 from wagonloader.wagon_worker_interface import WagonWorkerInterface
+from wagonloader.types import JsonType
 
-def fill_payload(current_path:str, node:dict|list|str, wagon_worker:WagonWorkerInterface) -> dict|list|str:
+def fill_payload(node:JsonType, wagon_worker:WagonWorkerInterface) -> JsonType:
 
     if type(node) is dict:
         big_node = {}

@@ -1,8 +1,9 @@
 import functools
 import operator
 from typing import Sequence
+from wagonloader.types import JsonType
 
-def wagon_get_item(sequence:Sequence, index:str) -> dict|list|str:
+def wagon_get_item(sequence:Sequence, index:str) -> JsonType:
     try:
         if isinstance(sequence,list):
             index = int(index)
@@ -17,7 +18,7 @@ def wagon_get_item(sequence:Sequence, index:str) -> dict|list|str:
         raise ValueError(f"The path does not exist in the data. key `{index}` has issues")
 
 
-def find(params:list[str], wagon_data:dict|list|str) -> dict|list|str:
+def find(params:list[str], wagon_data:JsonType) -> JsonType:
     if len(params) > 1:
         raise ValueError("Too many parameters for method FIND")
     elif len(params) == 0:

@@ -3,15 +3,16 @@ from  typing import Any, Protocol, Callable
 
 from wagonloader.wagon_worker.wagon_parser import create_pattern, split_parser
 from wagonloader.wagon_worker_interface import WagonWorkerInterface
+from wagonloader.types import JsonType, EvaluateType
 
-MethodType = Callable[[Any, dict|list|str], str]
+MethodType = Callable[[Any, JsonType], str]
 
 
 class WagonWorkerDefault(WagonWorkerInterface):
     workers_records: dict[str,MethodType] = {}
-    wagon_data: dict|list|str
+    wagon_data: JsonType
 
-    def evaluate(self, node: any) -> dict|list|str:
+    def evaluate(self, node: EvaluateType) -> JsonType:
         #Transforms the node into a string
         try:
             node = str(node)
@@ -36,7 +37,7 @@ class WagonWorkerDefault(WagonWorkerInterface):
         #Call for the method
         return self.call_method(method_key=method_key, params=params)
 
-    def call_method(self, method_key:str, params:list[str]) -> dict|list|str:
+    def call_method(self, method_key:str, params:list[str]) -> JsonType:
         method:MethodType = self.workers_records[method_key]
         return method(params, self.wagon_data)
 
