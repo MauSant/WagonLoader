@@ -19,9 +19,7 @@ So the folowing JSON, would tell WagonLoader to find the value behind the key `a
   ```json
   Context Data
   {
-    "all_books":["Lost paradise", "Dracula", "Five Rings"],
-    "user":"beltrano",
-    "books":"FIND(all_books)"
+    "all_books":["Lost paradise", "Dracula", "Five Rings"]
   }
   ``` 
   And the output would be:
@@ -118,6 +116,9 @@ So the folowing JSON, would tell WagonLoader to find the value behind the key `a
 
   #### Default Methods
   A few default methods are already built within the Wagon Loader. 
+
+  ##### Recursive note
+  All Methods with the default Wagon Worker are recusive, in such way that FIND(CONCAT(hi, FIND(greeting))) would work with the appropriate context.
 
   ##### FIND
   - Takes only 1 argument, a string containing alphanumeric characters
