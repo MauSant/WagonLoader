@@ -47,7 +47,7 @@ def split_parser(sentence: str) -> list[str]:
 
     for i in outer_commas:
         param = sentence[begin_index:i]
-        param = param.strip().strip(",").strip()
+        param = param.strip().strip(",").strip().strip("'")
         multiple_params.append(param)
         begin_index = i
 

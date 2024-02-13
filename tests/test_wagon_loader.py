@@ -3,6 +3,8 @@ import sys
 from wagonloader.wagon_loader import fill_payload
 from wagonloader.wagon_worker.wagon_worker_default import WagonWorkerDefault
 from wagonloader.wagon_worker.methods.find_method import find
+from wagonloader.wagon_worker.methods.concat_method import concat
+
 
 @pytest.fixture
 def wagon_data():
@@ -25,12 +27,15 @@ def wagon_data():
                             ("FIND(nest_list)", [1,2,["a","b", ["c"]] ]),
                             ("FIND(nest_list.2.2.0)", "c"),
                             ("FIND(FIND(nest_dict_recursion))", {"nest_dict2":{"nest_dict3":"value"}}),
+                            ("FIND(CONCAT(FIND(nest_dict_recursion), . , nest_dict2))", {"nest_dict3":"value"}),
                         ] 
 )
 def test_simple_fill_payload(node, expected, wagon_data:dict):
     wagon_worker_default = WagonWorkerDefault()
     wagon_worker_default.update_wagon_data(wagon_data)
     wagon_worker_default.upload_method(method_key="FIND", method_callable=find)
+    wagon_worker_default.upload_method(method_key="CONCAT", method_callable=concat)
+
 
 
     result = fill_payload(node, wagon_worker_default)

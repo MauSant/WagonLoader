@@ -3,9 +3,8 @@ from  typing import Any, Protocol, Callable
 
 from wagonloader.wagon_worker.wagon_parser import create_pattern, split_parser
 from wagonloader.wagon_worker_interface import WagonWorkerInterface
-from wagonloader.types import JsonType, EvaluateType
+from wagonloader.types import JsonType, EvaluateType, MethodType
 
-MethodType = Callable[[Any, JsonType], str]
 
 
 class WagonWorkerDefault(WagonWorkerInterface):
