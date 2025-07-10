@@ -23,6 +23,7 @@ def wagon_data():
 @pytest.mark.parametrize("node, expected",
                         [
                             ("FIND(simple)", "value1"),
+                            ("Maybe this goes wrong FIND(simple)", "Maybe this goes wrong FIND(simple)"),
                             ("FIND(nest_dict1.nest_dict2)", {"nest_dict3":"value"}),
                             ("FIND(nest_list)", [1,2,["a","b", ["c"]] ]),
                             ("FIND(nest_list.2.2.0)", "c"),

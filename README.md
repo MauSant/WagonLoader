@@ -54,7 +54,7 @@ So the folowing JSON, would tell WagonLoader to find the value behind the key `a
 
 
   ## Wagon Worker
-  The responsible for interpreting the methods of the DSl. For example is at this class that 
+  The responsible for interpreting the methods of the DSL.
   ```json
   `FIND(all_books)`
   ```
@@ -160,7 +160,7 @@ So the folowing JSON, would tell WagonLoader to find the value behind the key `a
   ```
 
   ##### CONCAT
-  Concatenate every argument. Every argument must be able to transform into a string
+  Concatenate every argument. Every argument must be transformable into a string
   ```
   CONCAT(nest_dict1, . , nest_dict2) -> "nest_dict1.nest_dict2"
   ```
@@ -196,8 +196,8 @@ So the folowing JSON, would tell WagonLoader to find the value behind the key `a
   ```
   Or building a string with passwords that have complicated charcaters:
   ```
-  Request Json                   Arg1                Arg2                 Arg3                    Arg4
-  {                 --------------------------------  -- --------------------------------------   -----
+  Request Json                   Arg1       Arg2     Arg3                 Arg3                    Arg4
+  {                        -----------  ------------  -- --------------------------------------   -----
     "mongo_string":"CONCAT(mongodb://, FIND(username), :,'#*¨%#!),notAMethod(@#¨GHSA,DJH*&¨!(#)_)', @host)"
   }
 
