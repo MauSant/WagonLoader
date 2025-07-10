@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "wagonloader"
-version = "0.1.0"
+version = "0.1.1"
 description = ""
 authors = ["Mauricio Santiago <maubr93@gmail.com>"]
 readme = "README.md"
